@@ -80,3 +80,5 @@ C:\Users\Paulius\source\repos\PizzaAPI\PizzaAPI\obj\Debug\net7.0\refint\PizzaAPI
 C:\Users\Paulius\source\repos\PizzaAPI\PizzaAPI\obj\Debug\net7.0\PizzaAPI.pdb
 C:\Users\Paulius\source\repos\PizzaAPI\PizzaAPI\obj\Debug\net7.0\PizzaAPI.genruntimeconfig.cache
 C:\Users\Paulius\source\repos\PizzaAPI\PizzaAPI\obj\Debug\net7.0\ref\PizzaAPI.dll
+C:\Users\Paulius\source\repos\PizzaAPI\PizzaAPI\bin\Debug\net7.0\AutoMapper.dll
+C:\Users\Paulius\source\repos\PizzaAPI\PizzaAPI\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

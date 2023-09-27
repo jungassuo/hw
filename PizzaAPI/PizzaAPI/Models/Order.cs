@@ -1,5 +1,6 @@
 ﻿namespace PizzaAPI.Models
 {
+    // Order class holds data, posted from front-end
     public class Order
     {
         public string size { get; set; }

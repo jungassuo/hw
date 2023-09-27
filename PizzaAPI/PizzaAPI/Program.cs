@@ -1,4 +1,5 @@
-
+using AutoMapper;
+using Barakas.Services.ProductAPI;
 using Microsoft.EntityFrameworkCore;
 using PizzaAPI.Data;
 
@@ -10,14 +11,22 @@ namespace PizzaAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // Add DbContext implemented class, to use it as object through dependency injection freely
+            // for crud operations. To add a service you have to declare connection string, which in this case 
+            // it is called "DefaultConnection". You can change it in appsettings.json. You will have to manually
+            // enter database server and name.
             builder.Services.AddDbContext<AddDbContext>(option => {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+            builder.Services.AddSingleton(mapper);
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            
+            // To get ahead of CORS policy i added a option, whichs allows localhost server to interact with 
+            // this API
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", builder =>
@@ -44,6 +53,7 @@ namespace PizzaAPI
 
             app.UseAuthorization();
 
+            // Set use cors parameter created above
             app.UseCors("AllowFrontend");
 
             app.MapControllers();

@@ -1,8 +1,8 @@
 import React from "react"
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
 
+//Add used pages to the routes
 import Orders from './pages/Orders'
-
 import ProductDetails from './components/ProductDetails'
 
 function App() {

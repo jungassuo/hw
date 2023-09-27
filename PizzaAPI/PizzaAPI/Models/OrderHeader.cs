@@ -1,5 +1,6 @@
 ﻿namespace PizzaAPI.Models
 {
+    // Order header is main order object, which holds price, size, and topping count values
     public class OrderHeader
     {
         public int Id { get; set; }

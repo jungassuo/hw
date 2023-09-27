@@ -11,6 +11,7 @@ namespace PizzaAPI.Data
 
         }
 
+        //Implement database tables used inside API
         public DbSet<Topping> Toppings { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<OrderHeader> OrderHeader { get; set; }

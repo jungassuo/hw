@@ -1,17 +1,20 @@
 import React from 'react'
 
+//Import Link component to allow easier navigation through button click
 import {Link} from 'react-router-dom'
 
+//Add order list context
 import { OrderContext } from '../context/Orders';
 
 export default function Orders({children}){
 
     const [loading, setLoading] = React.useState(true);
 
+    //get orders list to present done orders
     const { orders} = React.useContext(OrderContext);
 
+    //had to check when orders list is going to update after get method
     React.useEffect(() => {
-
         if (orders && orders.length > 0) {
             setLoading(false); 
           }
@@ -56,8 +59,6 @@ export default function Orders({children}){
                                       
                                       </div>  
                                     </div>
-                  
-                  
                   ))}
             </div> 
     )

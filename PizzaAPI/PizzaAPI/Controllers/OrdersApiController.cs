@@ -1,21 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PizzaAPI.Data;
 using PizzaAPI.Models;
+using PizzaAPI.Models.Dtos;
 
 namespace PizzaAPI.Controllers
 {
+    // This controller is used to post and get data from database
     [Route("api/orders")]
     [ApiController]
     public class OrdersApiController : ControllerBase
     {
         private readonly AddDbContext _db;
         private Response _response;
+        private readonly IMapper _mapper;
 
-        public OrdersApiController(AddDbContext db)
+
+        public OrdersApiController(AddDbContext db, IMapper mapper)
         {
             _db = db;
             _response = new Response();
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,7 +29,7 @@ namespace PizzaAPI.Controllers
             try
             {
                 IEnumerable<OrderHeader> objList = _db.OrderHeader.ToList();
-                _response.Result = objList;
+                _response.Result = _mapper.Map<IEnumerable<OrderHeaderDto>>(objList);
 
             }
             catch (Exception e)
@@ -36,18 +41,20 @@ namespace PizzaAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<Response> Post([FromBody] Order orderDto)
+        public async Task<Response> Post([FromBody] OrderDto orderDto)
         {
             try
             {
-                double totalPrice = orderDto.price + orderDto.toppingsCount;
-                if (orderDto.toppingsCount >= 3)
+                Order order = _mapper.Map<Order>(orderDto);
+                // Calculate the total price of an order
+                double totalPrice = order.price + order.toppingsCount;
+                if (order.toppingsCount >= 3)
                 {
                     totalPrice = totalPrice * 0.9;
                 }
 
                 OrderHeader orderHeaderTemp = new OrderHeader()
-                { Id = 0, TotalPrice = totalPrice, Size = orderDto.size, ToppingsCount = orderDto.toppingsCount};
+                { Id = 0, TotalPrice = totalPrice, Size = order.size, ToppingsCount = order.toppingsCount};
 
 
                 //Saving created object to finalOrder, to use its newly created value in upcoming queries
@@ -57,7 +64,7 @@ namespace PizzaAPI.Controllers
                 //Get newly generated OrderHeaderId
                 int getId = finalOrder.Id;
 
-                foreach (string value in orderDto.toppingsArr)
+                foreach (string value in order.toppingsArr)
                 {
                     OrderDetails temp = new OrderDetails()
                     {
@@ -68,7 +75,7 @@ namespace PizzaAPI.Controllers
                     _db.OrderDetails.Add(temp);
                     await _db.SaveChangesAsync();
                 }
-                _response.Result = orderDto;
+                _response.Result = order;
             }
             catch (Exception ex)
             {
